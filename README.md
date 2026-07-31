@@ -7,7 +7,7 @@ A static personal site for Timofei Voronov, built as a workshop ledger rather th
 - Node.js 22.12 or newer
 - npm (the committed `package-lock.json` is the source of dependency resolution)
 
-## Setup and development
+## Local development
 
 ```sh
 npm install
@@ -17,6 +17,8 @@ npm run dev
 
 Astro serves the development site at `http://localhost:4321` by default.
 
+## Production build
+
 Build and inspect the static output:
 
 ```sh
@@ -24,7 +26,8 @@ npm run build
 npm run preview
 ```
 
-The production files are written to `dist/`.
+The production files are written to the ignored `dist/` directory. Generated build artifacts are
+not committed to the repository.
 
 ## Public environment variables
 
@@ -115,18 +118,43 @@ Site identity is configured centrally in `src/data/site.ts`. `BaseLayout.astro` 
 
 The homepage and About page emit `Person` JSON-LD. Project stories emit `SoftwareSourceCode` JSON-LD and omit unavailable properties. `robots.txt` points to Astro’s generated sitemap.
 
-## Cloudflare Pages
+## GitHub Pages deployment
 
-This project uses Astro’s default static output and does not use a Cloudflare runtime adapter.
+The [deployment workflow](.github/workflows/deploy.yml) runs for every push to `main` and can also
+be started manually with **Run workflow** from the repository’s Actions tab. It installs the locked
+dependencies with Node.js 24, builds the Astro site, uploads `dist/` as a GitHub Pages artifact, and
+deploys that artifact through the `github-pages` environment. It does not use a deployment branch or
+commit generated files.
 
-Create a Cloudflare Pages project connected to the repository with:
+To include any optional public configuration in the production build, create repository variables
+under **Settings → Secrets and variables → Actions → Variables** with the same names shown in
+[Public environment variables](#public-environment-variables). Missing variables remain empty. These
+values are compiled into public files and must not contain secrets.
 
-- Framework preset: Astro (or equivalent manual settings)
-- Production branch: the branch chosen for release
-- Build command: `npm run build`
-- Build output directory: `dist`
-- Node.js version: 22.12 or newer
+Configure **Settings → Pages** with:
 
-Add any desired public environment variables in the Pages project settings. The static deployment settings match [Cloudflare’s Astro Pages guide](https://developers.cloudflare.com/pages/framework-guides/deploy-an-astro-site/).
+- Source: **GitHub Actions**
+- Custom domain: **tvoronov.dev**
+- **Enforce HTTPS** enabled after GitHub recognizes the DNS records and provisions the certificate
 
-No deployment or domain mutation is performed by this repository.
+The custom apex domain is configured in `astro.config.mjs` as `https://tvoronov.dev`. No repository
+base path or `CNAME` file is needed: an Actions-based deployment takes the custom domain from the
+repository’s Pages settings.
+
+Configure the following records for `tvoronov.dev` with the domain’s DNS provider:
+
+| Type   | Name | Value                 |
+| ------ | ---- | --------------------- |
+| `A`    | `@`  | `185.199.108.153`     |
+| `A`    | `@`  | `185.199.109.153`     |
+| `A`    | `@`  | `185.199.110.153`     |
+| `A`    | `@`  | `185.199.111.153`     |
+| `AAAA` | `@`  | `2606:50c0:8000::153` |
+| `AAAA` | `@`  | `2606:50c0:8001::153` |
+| `AAAA` | `@`  | `2606:50c0:8002::153` |
+| `AAAA` | `@`  | `2606:50c0:8003::153` |
+
+DNS changes can take up to 24 hours to propagate. See the official guides for
+[Astro deployments to GitHub Pages](https://docs.astro.build/en/guides/deploy/github/),
+[publishing with GitHub Actions](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site),
+and [custom-domain DNS configuration](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site).
