@@ -1,0 +1,134 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { assertUniqueProjectSlugs } from '../../lib/projects';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  assertUniqueProjectSlugs(projects);
+
+  return projects.map((project) => ({ params: { slug: project.data.slug }, props: { project } }));
+}
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { Content, headings } = await render(project);
+const image = project.data.socialImage;
+const softwareSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareSourceCode',
+  name: project.data.title,
+  description: project.data.summary,
+  url: new URL(`/projects/${project.data.slug}/`, Astro.site),
+  ...(project.data.repository ? { codeRepository: project.data.repository } : {}),
+  ...(project.data.technologies.length > 0
+    ? { programmingLanguage: project.data.technologies }
+    : {}),
+  author: {
+    '@type': 'Person',
+    name: 'Timofei Voronov',
+    url: new URL('/', Astro.site),
+  },
+};
+---
+
+<BaseLayout
+  title={project.data.title}
+  description={project.data.summary}
+  image={image}
+  structuredData={softwareSchema}
+>
+  <div class="page-shell">
+    <header class="project-hero">
+      <div class="project-hero__grid">
+        <div>
+          <p class="page-header__eyebrow">{project.data.category}</p>
+          <h1>{project.data.title}</h1>
+          <p class="project-hero__summary">{project.data.summary}</p>
+        </div>
+        <dl class="project-facts">
+          {
+            project.data.period && (
+              <div>
+                <>
+                  <dt>Period</dt>
+                  <dd>{project.data.period}</dd>
+                </>
+              </div>
+            )
+          }
+          {
+            project.data.status && (
+              <div>
+                <>
+                  <dt>Status</dt>
+                  <dd>{project.data.status}</dd>
+                </>
+              </div>
+            )
+          }
+          {
+            project.data.organization && (
+              <div>
+                <>
+                  <dt>Home</dt>
+                  <dd>{project.data.organization}</dd>
+                </>
+              </div>
+            )
+          }
+          {
+            project.data.role && (
+              <div>
+                <>
+                  <dt>Role</dt>
+                  <dd>{project.data.role}</dd>
+                </>
+              </div>
+            )
+          }
+          <div><dt>Stack</dt><dd>{project.data.technologies.join(' · ')}</dd></div>
+          {
+            project.data.repository && (
+              <div>
+                <>
+                  <dt>Source</dt>
+                  <dd>
+                    <a href={project.data.repository}>Repository</a>
+                  </dd>
+                </>
+              </div>
+            )
+          }
+          {
+            project.data.website && (
+              <div>
+                <>
+                  <dt>Website</dt>
+                  <dd>
+                    <a href={project.data.website}>Visit project</a>
+                  </dd>
+                </>
+              </div>
+            )
+          }
+        </dl>
+      </div>
+    </header>
+
+    <div class="prose-layout">
+      <aside class="prose-toc" aria-label="On this page">
+        <p class="section-label">On this page</p>
+        {
+          headings
+            .filter((heading) => heading.depth === 2)
+            .map((heading) => <a href={`#${heading.slug}`}>{heading.text}</a>)
+        }
+      </aside>
+      <article class="prose"><Content /></article>
+    </div>
+  </div>
+</BaseLayout>

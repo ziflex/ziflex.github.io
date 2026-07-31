@@ -1,0 +1,42 @@
+---
+title: Workshop Typography Sample
+slug: typography-sample
+description: An unpublished fixture for checking the full article typography system.
+publishedAt: 2026-07-31
+categories:
+  - Engineering notes
+  - Developer tooling
+draft: true
+---
+
+import Callout from '../../components/Callout.astro';
+
+## A second-level heading
+
+This unpublished fixture tests a paragraph with **strong text**, _emphasis_, an [inline link](https://example.com), and `inline code`. It never appears in generated routes, the writing index, the sitemap, or RSS.
+
+### A third-level heading
+
+Lists should remain easy to scan:
+
+- one bounded concern
+- a visible contract
+- an intentional escape hatch
+
+> A block quote should feel editorial, not ornamental.
+
+<Callout title="Design note">
+  Component-based callouts are the reason this fixture uses MDX. Ordinary articles can stay in
+  Markdown.
+</Callout>
+
+```ts
+type WorkshopEntry = {
+  title: string;
+  status: 'draft' | 'published';
+};
+```
+
+Footnotes keep supporting detail close without interrupting the main line.[^one]
+
+[^one]: This is the footnote typography fixture.

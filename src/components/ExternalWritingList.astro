@@ -1,0 +1,32 @@
+---
+import { externalWriting } from '../data/external-writing';
+
+interface Props {
+  limit?: number;
+}
+
+const { limit } = Astro.props;
+const articles = typeof limit === 'number' ? externalWriting.slice(0, limit) : externalWriting;
+---
+
+<ol class="article-list">
+  {
+    articles.map((article) => (
+      <li>
+        <a href={article.url}>
+          <span>
+            <strong>{article.title}</strong>
+            <span>{article.description}</span>
+          </span>
+          <time class="mono" datetime={article.publishedAt}>
+            {new Date(`${article.publishedAt}T00:00:00Z`).toLocaleDateString('en-US', {
+              month: 'short',
+              year: 'numeric',
+              timeZone: 'UTC',
+            })}
+          </time>
+        </a>
+      </li>
+    ))
+  }
+</ol>

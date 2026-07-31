@@ -1,0 +1,30 @@
+---
+import type { ProjectEntry } from '../lib/projects';
+import { projectRoute } from '../lib/projects';
+
+interface Props {
+  project: ProjectEntry;
+  size?: 'standard' | 'large' | 'compact';
+  showCategory?: boolean;
+}
+
+const { project, size = 'standard', showCategory = false } = Astro.props;
+---
+
+<article class:list={['project-preview', `project-preview--${size}`]}>
+  <div class="project-preview__meta mono">
+    {showCategory && <span>{project.data.category}</span>}
+    {project.data.period && <span>{project.data.period}</span>}
+    {project.data.status && <span>{project.data.status}</span>}
+  </div>
+  <h3><a href={projectRoute(project)}>{project.data.title}</a></h3>
+  <p>{project.data.summary}</p>
+  <ul class="tag-list" aria-label={`${project.data.title} technologies`}>
+    {project.data.technologies.map((technology) => <li>{technology}</li>)}
+  </ul>
+  <div class="project-preview__links">
+    <a class="text-link" href={projectRoute(project)}>Read the project story</a>
+    {project.data.repository && <a href={project.data.repository}>Repository</a>}
+    {project.data.website && <a href={project.data.website}>Website</a>}
+  </div>
+</article>

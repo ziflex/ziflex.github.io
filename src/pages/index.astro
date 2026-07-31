@@ -1,0 +1,119 @@
+---
+import { getCollection } from 'astro:content';
+import ExternalWritingList from '../components/ExternalWritingList.astro';
+import ProjectPreview from '../components/ProjectPreview.astro';
+import { SITE } from '../data/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { homepageProjects } from '../lib/projects';
+
+const projects = homepageProjects(await getCollection('projects'));
+const ferret = projects.find((project) => project.data.slug === 'ferret');
+const secondary = projects.filter((project) => project.data.slug !== 'ferret');
+
+if (!ferret) throw new Error('Homepage requires the Ferret project.');
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: SITE.name,
+  url: SITE.url,
+  sameAs: [SITE.github, SITE.ferret],
+  knowsAbout: ['Developer tools', 'Programming languages', 'Infrastructure', 'Automation'],
+};
+---
+
+<BaseLayout structuredData={personSchema}>
+  <div class="page-shell">
+    <section class="home-intro" aria-labelledby="home-title">
+      <div>
+        <p class="page-header__eyebrow">Software engineer · workshop notes</p>
+        <h1 id="home-title">Timofei <span>Voronov</span></h1>
+      </div>
+      <div>
+        <p class="home-intro__statement">
+          I build developer tools, languages, and infrastructure that make complex systems easier to
+          use.
+        </p>
+        <p class="home-intro__note">
+          Creator of Ferret, with more than a decade of open-source work across reusable libraries,
+          integrations, runtimes, and developer tooling.
+        </p>
+      </div>
+    </section>
+
+    <section class="ledger-section" aria-labelledby="featured-heading">
+      <div class="section-heading">
+        <p class="section-label">Selected work / 01</p>
+        <div>
+          <h2 id="featured-heading">Systems built to be understood.</h2>
+          <p>
+            The technologies change; the interest in useful interfaces, extension points, and
+            dependable boundaries stays remarkably consistent.
+          </p>
+        </div>
+      </div>
+      <div class="feature-grid">
+        <ProjectPreview project={ferret} size="large" />
+        <div class="feature-grid__secondary">
+          {secondary.map((project) => <ProjectPreview project={project} size="compact" />)}
+        </div>
+      </div>
+    </section>
+
+    <section class="ledger-section" aria-labelledby="elsewhere-heading">
+      <div class="section-heading">
+        <p class="section-label">The wider bench / 02</p>
+        <div>
+          <h2 id="elsewhere-heading">Elsewhere in the workshop.</h2>
+          <p>
+            Smaller current utilities and older experiments reveal the same design habits at another
+            scale.
+          </p>
+        </div>
+      </div>
+      <div class="workbench-strip">
+        <article>
+          <p class="archive-period">Current utility</p>
+          <h3><a href="/projects/throttle/">throttle</a></h3>
+          <p>A thread-safe fixed-window limiter and HTTP transport wrapper for Go clients.</p>
+          <a class="text-link" href="/projects/throttle/">Read story</a>
+        </article>
+        <article>
+          <p class="archive-period">Maintained utility</p>
+          <h3><a href="https://github.com/ziflex/pinterval">pinterval</a></h3>
+          <p>
+            Async interval scheduling with dynamic timing, stop conditions, retries, and backoff.
+          </p>
+          <a class="text-link" href="/archive/#current-utilities">Find in archive</a>
+        </article>
+        <article>
+          <p class="archive-period">Earlier abstraction</p>
+          <h3><a href="https://github.com/ziflex/electron-ipc-socket">electron-ipc-socket</a></h3>
+          <p>Two-way event and request-response communication on Electron’s IPC system.</p>
+          <a class="text-link" href="/archive/#javascript-tooling-and-electron"
+            >Browse the archive</a
+          >
+        </article>
+      </div>
+    </section>
+
+    <section class="ledger-section split-panel" aria-label="Current focus and writing">
+      <div>
+        <p class="section-label">At the bench / 03</p>
+        <h2>Current focus</h2>
+        <p>
+          The manually maintained workbench currently centers on Ferret v2, language and runtime
+          design, developer tooling, and infrastructure abstractions.
+        </p>
+        <a class="text-link" href="/now/">See what is on the bench</a>
+      </div>
+      <div>
+        <p class="section-label">Writing elsewhere / 04</p>
+        <h2>Recent Ferret notes</h2>
+        <p>Tim-authored design and project updates published on the Ferret website.</p>
+        <ExternalWritingList limit={3} />
+        <a class="text-link" href="/writing/">Writing index</a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

@@ -1,0 +1,65 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { readingTime } from '../../lib/reading-time';
+import {
+  adjacentWriting,
+  assertUniqueWritingSlugs,
+  publishedWriting,
+  writingRoute,
+} from '../../lib/writing';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('writing');
+  assertUniqueWritingSlugs(entries);
+  const articles = publishedWriting(entries);
+  return articles.map((article) => ({
+    params: { slug: article.data.slug },
+    props: { article, articles },
+  }));
+}
+
+interface Props {
+  article: CollectionEntry<'writing'>;
+  articles: CollectionEntry<'writing'>[];
+}
+
+const { article, articles } = Astro.props;
+const { Content } = await render(article);
+const { previous, next } = adjacentWriting(articles, article.data.slug);
+const time = readingTime(article.body ?? '');
+---
+
+<BaseLayout
+  title={article.data.title}
+  description={article.data.description}
+  type="article"
+  canonicalUrl={article.data.canonical}
+>
+  <div class="page-shell">
+    <header class="article-header">
+      <p class="article-meta">
+        <time datetime={article.data.publishedAt.toISOString()}
+          >{article.data.publishedAt.toLocaleDateString('en-US', { dateStyle: 'long' })}</time
+        >
+        · {time.label}
+      </p>
+      <h1>{article.data.title}</h1>
+      <p class="article-header__description">{article.data.description}</p>
+      <ul class="tag-list" aria-label="Article categories">
+        {article.data.categories.map((category) => <li>{category}</li>)}
+      </ul>
+    </header>
+    <article class="article-body prose">
+      <Content />
+      {
+        (previous || next) && (
+          <nav class="article-pagination" aria-label="Adjacent articles">
+            <span>{previous && <a href={writingRoute(previous)}>← {previous.data.title}</a>}</span>
+            <span>{next && <a href={writingRoute(next)}>{next.data.title} →</a>}</span>
+          </nav>
+        )
+      }
+    </article>
+  </div>
+</BaseLayout>

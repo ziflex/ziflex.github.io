@@ -1,0 +1,79 @@
+---
+import { getCollection } from 'astro:content';
+import ProjectPreview from '../../components/ProjectPreview.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { selectedProjects } from '../../lib/projects';
+
+const projects = selectedProjects(await getCollection('projects'));
+const groups = [
+  {
+    title: 'Language and runtime',
+    description:
+      'A declarative interface over browser automation, data access, and an embeddable execution engine.',
+    projects: projects.filter((project) => project.data.category === 'Language and runtime'),
+  },
+  {
+    title: 'Go infrastructure',
+    description:
+      'Focused libraries around logging, service readiness, database boundaries, and rate control.',
+    projects: projects.filter((project) => project.data.category === 'Go infrastructure'),
+  },
+  {
+    title: 'Integration ecosystems',
+    description:
+      'Reusable components and testing tools around visual, service-oriented application development.',
+    projects: projects.filter((project) => project.data.category === 'Integration ecosystems'),
+  },
+];
+---
+
+<BaseLayout
+  title="Selected projects"
+  description="Selected software projects by Timofei Voronov: Ferret, Go infrastructure libraries, and the Node-RED Tools ecosystem."
+>
+  <div class="page-shell">
+    <header class="page-header">
+      <div>
+        <p class="page-header__eyebrow">Selected projects</p>
+        <h1>Work with a point of view.</h1>
+      </div>
+      <p class="page-header__summary">
+        Languages, infrastructure, and integrations designed around explicit contracts and useful
+        developer interfaces—not a catalogue of every repository.
+      </p>
+    </header>
+
+    <div class="editorial-groups">
+      {
+        groups.map((group) => (
+          <section
+            class="project-group"
+            aria-labelledby={`group-${group.title.toLowerCase().replaceAll(' ', '-')}`}
+          >
+            <div class="project-group__intro">
+              <h2 id={`group-${group.title.toLowerCase().replaceAll(' ', '-')}`}>{group.title}</h2>
+              <p>{group.description}</p>
+            </div>
+            <div class="project-group__items">
+              {group.projects.map((project) => (
+                <ProjectPreview project={project} showCategory={false} />
+              ))}
+            </div>
+          </section>
+        ))
+      }
+    </div>
+
+    <section class="ledger-section split-panel" aria-labelledby="archive-link-heading">
+      <p class="section-label">More than a decade of experiments</p>
+      <div>
+        <h2 id="archive-link-heading">The earlier work is part of the story.</h2>
+        <p>
+          Electron IPC, JavaScript build systems, connected devices, reusable primitives, and an
+          early .NET query tool show where many of these concerns began.
+        </p>
+        <a class="text-link" href="/archive/">Earlier experiments and archived projects</a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

@@ -1,0 +1,74 @@
+---
+import { getCollection } from 'astro:content';
+import ExternalWritingList from '../../components/ExternalWritingList.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { publishedWriting, writingRoute } from '../../lib/writing';
+
+const articles = publishedWriting(await getCollection('writing'));
+---
+
+<BaseLayout
+  title="Writing"
+  description="Writing by Timofei Voronov about language design, developer tooling, infrastructure, engineering, and open source."
+>
+  <div class="page-shell">
+    <header class="page-header">
+      <div>
+        <p class="page-header__eyebrow">Writing</p>
+        <h1>Notes, when they are ready.</h1>
+      </div>
+      <p class="page-header__summary">
+        The local notebook is prepared for essays on language design, developer tooling,
+        infrastructure, and open source. Nothing is published here merely to fill the shelf.
+      </p>
+    </header>
+
+    <section class="ledger-section" aria-labelledby="local-writing">
+      <div class="section-heading">
+        <p class="section-label">On this site</p>
+        <div><h2 id="local-writing">Workshop notes</h2></div>
+      </div>
+      {
+        articles.length > 0 ? (
+          <ol class="article-list">
+            {articles.map((article) => (
+              <li>
+                <a href={writingRoute(article)}>
+                  <span>
+                    <strong>{article.data.title}</strong>
+                    <span>{article.data.description}</span>
+                  </span>
+                  <time class="mono" datetime={article.data.publishedAt.toISOString()}>
+                    {article.data.publishedAt.toLocaleDateString('en-US', {
+                      month: 'short',
+                      year: 'numeric',
+                    })}
+                  </time>
+                </a>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <div class="empty-state">
+            <h3>The notebook is open. The first local essay is not published yet.</h3>
+            <p>
+              Drafts remain outside routes, feeds, and indexes until they are explicitly marked for
+              publication. In the meantime, the recent Ferret design notes are available below.
+            </p>
+          </div>
+        )
+      }
+    </section>
+
+    <section class="ledger-section" aria-labelledby="external-writing">
+      <div class="section-heading">
+        <p class="section-label">Writing elsewhere</p>
+        <div>
+          <h2 id="external-writing">Recent Ferret writing</h2>
+          <p>Verified Tim-authored design notes and project updates published on ferretlang.org.</p>
+        </div>
+      </div>
+      <ExternalWritingList />
+    </section>
+  </div>
+</BaseLayout>

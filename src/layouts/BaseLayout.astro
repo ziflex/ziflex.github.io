@@ -1,0 +1,85 @@
+---
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import { SITE } from '../data/site';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
+  canonicalUrl?: string;
+}
+
+const {
+  title,
+  description = SITE.description,
+  image = SITE.socialImage,
+  type = 'website',
+  structuredData,
+  canonicalUrl,
+} = Astro.props;
+const pageTitle = title ? `${title} — ${SITE.name}` : SITE.title;
+const canonical = canonicalUrl ? new URL(canonicalUrl) : new URL(Astro.url.pathname, SITE.url);
+const socialImage = new URL(image, SITE.url);
+const analyticsId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
+const analyticsScript = analyticsId
+  ? `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config',${JSON.stringify(analyticsId)});`
+  : '';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#f3efe7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#191815" media="(prefers-color-scheme: dark)" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`${SITE.name} writing`}
+      href={new URL(SITE.rss, SITE.url)}
+    />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    {
+      structuredData && (
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+      )
+    }
+    {
+      analyticsId && (
+        <script
+          is:inline
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${analyticsId}`}
+        />
+      )
+    }
+    {analyticsId && <script is:inline set:html={analyticsScript} />}
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <SiteHeader />
+    <main id="main-content" tabindex="-1"><slot /></main>
+    <SiteFooter />
+  </body>
+</html>

@@ -1,0 +1,90 @@
+---
+import { archiveGroups } from '../data/archive';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Archive"
+  description="A working archive of Timofei Voronov’s utilities, integrations, JavaScript tooling, Electron work, and earlier developer tools."
+>
+  <div class="page-shell">
+    <header class="page-header">
+      <div>
+        <p class="page-header__eyebrow">Workshop archive</p>
+        <h1>The longer thread.</h1>
+      </div>
+      <p class="page-header__summary">
+        The technologies changed. The interest in developer tools, reusable primitives, integration
+        boundaries, and better abstractions did not.
+      </p>
+    </header>
+
+    <p class="archive-intro">
+      This is an editorial archive, not a graveyard. Placement here reflects the shape of the story,
+      not whether a repository is abandoned. “Archived” appears only where GitHub marks the
+      repository that way.
+    </p>
+
+    <section class="archive-group" aria-labelledby="selected-go-libraries">
+      <div class="archive-group__heading">
+        <h2 id="selected-go-libraries">Selected Go libraries</h2>
+        <p>Full stories live in the selected-project collection.</p>
+      </div>
+      <div class="workbench-strip">
+        <div><h3><a href="/projects/lecho/">lecho</a></h3><p>Echo and Zerolog integration.</p></div>
+        <div>
+          <h3><a href="/projects/waitfor/">waitfor</a></h3><p>Resource availability checks.</p>
+        </div>
+        <div>
+          <h3><a href="/projects/dbx/">dbx</a></h3><p>Database and transaction boundaries.</p>
+        </div>
+      </div>
+    </section>
+
+    {
+      archiveGroups.map((group) => {
+        const id = group.title
+          .toLowerCase()
+          .replaceAll(/[^a-z0-9]+/g, '-')
+          .replaceAll(/(^-|-$)/g, '');
+        return (
+          <section class="archive-group" aria-labelledby={id}>
+            <div class="archive-group__heading">
+              <h2 id={id}>{group.title}</h2>
+              <p>{group.introduction}</p>
+            </div>
+            <ol class="archive-list">
+              {group.entries.map((entry) => (
+                <li class="archive-entry">
+                  <div>
+                    <p class="archive-period">{entry.period}</p>
+                    <h3>
+                      <a href={entry.repository}>{entry.name}</a>
+                    </h3>
+                    {entry.status && (
+                      <span class:list={['archive-period', 'status']}>{entry.status}</span>
+                    )}
+                  </div>
+                  <div>
+                    <p>{entry.description}</p>
+                    <ul class="tag-list" aria-label={`${entry.name} technologies`}>
+                      {entry.technologies.map((technology) => (
+                        <li>{technology}</li>
+                      ))}
+                    </ul>
+                    <div class="archive-entry__links">
+                      <a href={entry.repository}>Repository</a>
+                      {entry.links?.map((link) => (
+                        <a href={link.url}>{link.label}</a>
+                      ))}
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </section>
+        );
+      })
+    }
+  </div>
+</BaseLayout>

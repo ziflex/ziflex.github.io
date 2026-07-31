@@ -1,0 +1,38 @@
+---
+import { navigation, SITE } from '../data/site';
+
+const pathname = Astro.url.pathname;
+const email = import.meta.env.PUBLIC_CONTACT_EMAIL;
+
+function isCurrent(href: string) {
+  return pathname === href || (href !== '/' && pathname.startsWith(href));
+}
+---
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="wordmark" href="/" aria-label={`${SITE.name}, home`}>
+      <span aria-hidden="true">TV</span>
+      <span class="wordmark__name">Timofei Voronov</span>
+    </a>
+
+    <nav class="primary-nav" aria-label="Primary navigation">
+      <ul>
+        {
+          navigation.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <nav class="utility-nav" aria-label="Elsewhere">
+      <a href={SITE.github}>GitHub</a>
+      {email && <a href={`mailto:${email}`}>Email</a>}
+    </nav>
+  </div>
+</header>

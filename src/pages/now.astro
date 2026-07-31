@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const updated = 'July 2026';
+---
+
+<BaseLayout
+  title="Now"
+  description="A manually maintained note about what Timofei Voronov is currently building, exploring, and occasionally writing about."
+>
+  <div class="page-shell">
+    <header class="page-header">
+      <div>
+        <p class="page-header__eyebrow">Now · manually maintained</p>
+        <h1>On the workbench.</h1>
+      </div>
+      <p class="page-header__summary">
+        A small, deliberately incomplete view of current attention. It is not inferred from commit
+        activity.
+      </p>
+    </header>
+
+    <div class="now-grid">
+      <section>
+        <p class="section-label">Building</p>
+        <h2>Ferret v2</h2>
+        <p>
+          Continuing work around the language, compiler, runtime, embedding surface, and developer
+          tools.
+        </p>
+      </section>
+      <section>
+        <p class="section-label">Exploring</p>
+        <h2>Infrastructure abstractions</h2>
+        <p>
+          How small APIs can make network, lifecycle, and policy boundaries easier to use and reason
+          about.
+        </p>
+      </section>
+      <section>
+        <p class="section-label">Occasionally writing about</p>
+        <h2>Designing the machinery</h2>
+        <p>
+          Language capabilities, execution models, documentation, and the choices behind
+          developer-facing systems.
+        </p>
+      </section>
+    </div>
+
+    <section class="ledger-section split-panel" aria-labelledby="now-maintenance">
+      <p class="section-label">Last updated · {updated}</p>
+      <div>
+        <h2 id="now-maintenance">A public workbench, not a live feed.</h2>
+        <p>
+          This page changes by hand when the focus changes. Repository activity is evidence of code
+          movement, not a reliable substitute for attention or intent.
+        </p>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+Astro.response.status = 404;
+---
+
+<BaseLayout title="Page not found" description="The requested page is not in this workshop ledger.">
+  <div class="page-shell not-found">
+    <div>
+      <p class="page-header__eyebrow">Wrong drawer</p>
+      <h1>Nothing is filed here.</h1>
+      <p>The link may be old, or the page may have moved back onto the workbench.</p>
+      <p><a class="text-link" href="/">Return to the workshop</a></p>
+    </div>
+    <p class="not-found__code" aria-hidden="true">404</p>
+  </div>
+</BaseLayout>
