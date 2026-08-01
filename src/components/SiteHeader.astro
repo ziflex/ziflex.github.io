@@ -2,7 +2,6 @@
 import { navigation, SITE } from '../data/site';
 
 const pathname = Astro.url.pathname;
-const email = import.meta.env.PUBLIC_CONTACT_EMAIL;
 
 function isCurrent(href: string) {
   return pathname === href || (href !== '/' && pathname.startsWith(href));
@@ -31,8 +30,9 @@ function isCurrent(href: string) {
     </nav>
 
     <nav class="utility-nav" aria-label="Elsewhere">
-      <a href={SITE.github}>GitHub</a>
-      {email && <a href={`mailto:${email}`}>Email</a>}
+      <a target="_blank" href={SITE.github}>GitHub</a>
+      {SITE.linkedin && <a target="_blank" href={SITE.linkedin}>LinkedIn</a>}
+      {SITE.email && <a target="_blank" href={SITE.email}>Email</a>}
     </nav>
   </div>
 </header>

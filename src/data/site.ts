@@ -9,6 +9,8 @@ export const SITE = {
     'Personal site of Timofei Voronov, creator of Ferret and builder of developer tools, programming languages, and infrastructure libraries.',
   github: 'https://github.com/ziflex',
   ferret: 'https://ferretlang.org',
+  email: 'mailto:tim@tvoronov.dev',
+  linkedin: 'https://www.linkedin.com/in/tvoronov/',
   rss: '/rss.xml',
   socialImage: '/og.png',
   resumeUrl: resume
