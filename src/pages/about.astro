@@ -2,7 +2,6 @@
 import { SITE } from '../data/site';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-const resumeUrl = import.meta.env.PUBLIC_RESUME_URL;
 const personSchema = {
   '@context': 'https://schema.org',
   '@type': 'Person',
@@ -40,43 +39,34 @@ const personSchema = {
       <article class="prose">
         <h2 id="progression">A progression of interests</h2>
         <p>
-          Much of my work has been around backend systems, infrastructure, integrations, and the
-          tools people use to work with them. The path began with small reusable JavaScript and .NET
-          utilities, moved through build systems, Electron IPC, connected devices, and Node-RED
-          integrations, and later concentrated on Go infrastructure.
+          Most of my work has centered on backend systems, infrastructure, integrations, and the tools developers use to work with them.
         </p>
         <p>
-          Ferret brings many of those interests together. It is a declarative language and runtime
-          for data automation, which makes language design, embedding, extensibility, browser
-          control, and developer experience parts of the same system.
+          Over time, those interests have taken different forms: small JavaScript and .NET libraries, build systems, Electron IPC, connected devices, Node-RED integrations, and later infrastructure and developer tooling in Go. Each project explored a different part of the same question: how to make complex systems easier to understand and work with.
+        </p>
+        <p>
+          Ferret brings many of those interests together. It is a declarative language and runtime for data automation that combines language design, embedding, extensibility, browser automation, and developer experience into a single system.
         </p>
 
         <h2 id="working-style">Working style</h2>
         <p>
-          I like building tools that remove friction without hiding the underlying system. A useful
-          abstraction should clarify ownership and failure modes, keep escape hatches visible, and
-          remain small enough to understand.
+          I enjoy building tools that reduce friction without obscuring how they work. Good abstractions should make a system easier to understand, not harder. They should expose ownership and failure clearly, leave room for escape hatches when needed, and remain small enough to reason about.
         </p>
         <p>
-          That interest appears at different scales here: a transaction helper, a logging
-          integration, a set of visual-programming nodes, and a complete language runtime. The scale
-          changes; the attention to the interface does not.
+          That perspective appears throughout this workshop. Some projects are small utilities that solve a single problem. Others are integrations, libraries, or larger systems that evolved over years. The scale changes, but the goal remains the same: practical software with interfaces that are predictable, composable, and pleasant to use.
         </p>
 
-        <h2 id="places">Places</h2>
         <p>
-          I grew up in Vladivostok and have lived and worked across countries. Those details matter
-          less here than the continuity of the work: building practical infrastructure, publishing
-          reusable pieces, and learning what makes a tool hospitable to its users.
-        </p>
+          Everything here is open source and continues to evolve. </p>
+
         <p>
-          You can follow the public work on <a href={SITE.github}>GitHub</a> or read more about{' '}
-          <a href={SITE.ferret}>Ferret</a>.
+          If something is useful—or sparks an idea—explore the projects on <a href={SITE.github}>GitHub</a>, learn more about {' '}
+          <a href={SITE.ferret}>Ferret</a>, or take a look at my <a href={SITE.resumeUrl}>résumé</a>.
         </p>
         {
-          resumeUrl && (
+          SITE.resumeUrl && (
             <p>
-              <a class="text-link" href={resumeUrl}>
+              <a class="text-link" href={SITE.resumeUrl}>
                 Résumé
               </a>
             </p>

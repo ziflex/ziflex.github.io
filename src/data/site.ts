@@ -1,3 +1,5 @@
+import resume from './timofei_voronov_resume.pdf'
+
 export const SITE = {
   name: 'Timofei Voronov',
   shortName: 'TV',
@@ -9,11 +11,12 @@ export const SITE = {
   ferret: 'https://ferretlang.org',
   rss: '/rss.xml',
   socialImage: '/og.png',
+  resumeUrl: resume
 } as const;
 
 export const navigation = [
   { href: '/projects/', label: 'Projects' },
   { href: '/writing/', label: 'Writing' },
-  { href: '/about/', label: 'About' },
   { href: '/now/', label: 'Now' },
+  { href: '/about/', label: 'About' },
 ] as const;
