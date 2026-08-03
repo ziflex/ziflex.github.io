@@ -50,7 +50,7 @@ export const archiveGroups: ArchiveGroup[] = [
         description:
           'A Go beacon-tracking system designed for small Linux devices such as Raspberry Pi, with REST notifications for beacon arrival and departure.',
         repository: 'https://github.com/blent/beagle',
-        period: 'Since 2017',
+        period: '2017',
         status: 'archived',
         technologies: ['Go', 'Bluetooth LE', 'REST'],
       },
@@ -66,7 +66,7 @@ export const archiveGroups: ArchiveGroup[] = [
         description:
           'Event and request-response communication built on top of Electron IPC, giving renderer and main processes a two-way socket-like abstraction.',
         repository: 'https://github.com/ziflex/electron-ipc-socket',
-        period: 'Since 2016',
+        period: '2019-2020',
         technologies: ['TypeScript', 'Electron', 'IPC'],
       },
       {
