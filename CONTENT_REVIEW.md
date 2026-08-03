@@ -21,8 +21,8 @@ Sources:
 
 ## Taxonomy decision
 
-- Current homepage: Ferret, lecho, waitfor, and dbx.
-- Current selected projects: Ferret, lecho, waitfor, dbx, and throttle.
+- Current homepage: Ferret, lecho, waitfor, dbx, and go-options.
+- Current selected projects: Ferret, lecho, waitfor, dbx, go-options, and throttle.
 - Archive: Node-RED Tools, pinterval, electron-ipc-socket, compose-record, resource-handler, env-manager, namespaces, queryconsole, the Gulp toolchain, and Beagle.
 
-Beagle is an independent project, not part of the Node-RED Tools ecosystem. It is grouped with Node-RED Tools only by the shared connected-systems theme and is also marked archived, with its period retained as “Since 2017.” The site has no dedicated Beagle project story.
+Beagle is an independent project, not part of the Node-RED Tools ecosystem. It is grouped with Node-RED Tools only by the shared connected-systems theme and is also marked archived, with its period retained as “2017.” The site has no dedicated Beagle project story.

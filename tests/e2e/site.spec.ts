@@ -8,6 +8,7 @@ const routes = [
   '/projects/lecho/',
   '/projects/waitfor/',
   '/projects/dbx/',
+  '/projects/go-options/',
   '/projects/node-red-tools/',
   '/projects/throttle/',
   '/archive/',
@@ -97,6 +98,7 @@ test.describe('project taxonomy', () => {
       'lecho',
       'waitfor',
       'dbx',
+      'go-options',
     ]);
     await expect(current.getByRole('link', { name: 'Node-RED Tools' })).toHaveCount(0);
     await expect(page.getByRole('heading', { name: 'Selected Past Work' })).toHaveCount(0);
@@ -113,6 +115,7 @@ test.describe('project taxonomy', () => {
       'lecho',
       'waitfor',
       'dbx',
+      'go-options',
       'throttle',
     ]);
     await expect(language.getByRole('link', { name: 'Node-RED Tools' })).toHaveCount(0);
@@ -142,7 +145,7 @@ test.describe('project taxonomy', () => {
     );
 
     const beagle = connectedSystems.locator('.archive-entry').filter({ hasText: 'Beagle' });
-    await expect(beagle.getByText('Since 2017', { exact: true })).toBeVisible();
+    await expect(beagle.getByText('2017', { exact: true })).toBeVisible();
     await expect(beagle.getByText('archived', { exact: true })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Selected Past Work' })).toHaveCount(0);
   });

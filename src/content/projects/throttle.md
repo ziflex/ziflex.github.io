@@ -14,7 +14,7 @@ technologies:
   - HTTP
   - Concurrency
 role: Creator and maintainer
-order: 6
+order: 7
 sources:
   - https://github.com/ziflex/throttle
   - https://github.com/ziflex/throttle/blob/main/throttle.go
