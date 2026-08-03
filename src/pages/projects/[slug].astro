@@ -24,6 +24,9 @@ const softwareSchema = {
   description: project.data.summary,
   url: new URL(`/projects/${project.data.slug}/`, Astro.site),
   ...(project.data.repository ? { codeRepository: project.data.repository } : {}),
+  ...(project.data.website ? { sameAs: project.data.website } : {}),
+  ...(project.data.status ? { creativeWorkStatus: project.data.status } : {}),
+  ...(project.data.temporalCoverage ? { temporalCoverage: project.data.temporalCoverage } : {}),
   ...(project.data.technologies.length > 0
     ? { programmingLanguage: project.data.technologies }
     : {}),
@@ -109,7 +112,9 @@ const softwareSchema = {
                 <>
                   <dt>Website</dt>
                   <dd>
-                    <a href={project.data.website}>Visit project</a>
+                    <a href={project.data.website}>
+                      {project.data.websiteLabel ?? 'Visit project'}
+                    </a>
                   </dd>
                 </>
               </div>

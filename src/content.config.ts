@@ -6,25 +6,47 @@ const projectStatus = z.enum(['active', 'maintained', 'experimental', 'archived'
 
 const projects = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
-  schema: z.object({
-    title: z.string(),
-    slug: z.string(),
-    summary: z.string(),
-    repository: z.url().optional(),
-    website: z.url().optional(),
-    organization: z.string().optional(),
-    period: z.string().optional(),
-    status: projectStatus.optional(),
-    featured: z.boolean(),
-    homepage: z.boolean(),
-    category: z.string(),
-    technologies: z.array(z.string()),
-    role: z.string().optional(),
-    socialImage: z.string().optional(),
-    order: z.number().int(),
-    sources: z.array(z.url()).min(1),
-    reflection: z.string().optional(),
-  }),
+  schema: z
+    .object({
+      title: z.string(),
+      slug: z.string(),
+      summary: z.string(),
+      repository: z.url().optional(),
+      website: z.url().optional(),
+      websiteLabel: z.string().optional(),
+      organization: z.string().optional(),
+      period: z.string().optional(),
+      temporalCoverage: z.string().optional(),
+      status: projectStatus.optional(),
+      featured: z.boolean(),
+      homepage: z.boolean(),
+      category: z.string(),
+      technologies: z.array(z.string()),
+      role: z.string().optional(),
+      socialImage: z.string().optional(),
+      order: z.number().int(),
+      sources: z.array(z.url()).min(1),
+      reflection: z.string().optional(),
+    })
+    .superRefine((project, context) => {
+      if (project.status !== 'archived') return;
+
+      if (project.featured) {
+        context.addIssue({
+          code: 'custom',
+          path: ['featured'],
+          message: 'Archived projects cannot be featured.',
+        });
+      }
+
+      if (project.homepage) {
+        context.addIssue({
+          code: 'custom',
+          path: ['homepage'],
+          message: 'Archived projects cannot appear in the primary homepage project list.',
+        });
+      }
+    }),
 });
 
 const writing = defineCollection({

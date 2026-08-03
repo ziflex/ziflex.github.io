@@ -31,16 +31,17 @@ export const archiveGroups: ArchiveGroup[] = [
     ],
   },
   {
-    title: 'Node-RED and connected systems',
+    title: 'Connected Systems',
     introduction:
       'Tools at the boundary between software, services, messages, and physical devices.',
     entries: [
       {
         name: 'Node-RED Tools',
         description:
-          'An ecosystem of reusable Node-RED integrations and testing tools, created from project work involving Node-RED.',
+          'An open-source ecosystem of reusable Node-RED integrations and testing tools, active from 2020 to 2022.',
         repository: 'https://github.com/node-red-tools',
-        period: 'Since 2020',
+        period: '2020–2022',
+        status: 'archived',
         technologies: ['JavaScript', 'Node-RED', 'Integrations'],
         links: [{ label: 'project story', url: '/projects/node-red-tools/' }],
       },
@@ -50,6 +51,7 @@ export const archiveGroups: ArchiveGroup[] = [
           'A Go beacon-tracking system designed for small Linux devices such as Raspberry Pi, with REST notifications for beacon arrival and departure.',
         repository: 'https://github.com/blent/beagle',
         period: 'Since 2017',
+        status: 'archived',
         technologies: ['Go', 'Bluetooth LE', 'REST'],
       },
     ],

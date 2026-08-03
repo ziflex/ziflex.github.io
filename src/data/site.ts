@@ -1,4 +1,4 @@
-import resume from './timofei_voronov_resume.pdf'
+import resume from './timofei_voronov_resume.pdf';
 
 export const SITE = {
   name: 'Timofei Voronov',
@@ -13,7 +13,7 @@ export const SITE = {
   linkedin: 'https://www.linkedin.com/in/tvoronov/',
   rss: '/rss.xml',
   socialImage: '/og.png',
-  resumeUrl: resume
+  resumeUrl: resume,
 } as const;
 
 export const navigation = [

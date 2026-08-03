@@ -7,11 +7,15 @@ export function sortProjects(projects: ProjectEntry[]): ProjectEntry[] {
 }
 
 export function selectedProjects(projects: ProjectEntry[]): ProjectEntry[] {
-  return sortProjects(projects.filter((project) => project.data.featured));
+  return sortProjects(
+    projects.filter((project) => project.data.featured && project.data.status !== 'archived'),
+  );
 }
 
 export function homepageProjects(projects: ProjectEntry[]): ProjectEntry[] {
-  return sortProjects(projects.filter((project) => project.data.homepage));
+  return sortProjects(
+    projects.filter((project) => project.data.homepage && project.data.status !== 'archived'),
+  );
 }
 
 export function projectRoute(project: ProjectEntry): string {

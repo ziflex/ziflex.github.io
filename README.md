@@ -85,11 +85,11 @@ The Lighthouse configuration audits the homepage, project index, and Ferret stor
 
 ### Projects
 
-Project stories live in `src/content/projects/`. Their schema is defined in `src/content.config.ts`. A project requires editorial selection flags, a stable `slug`, display order, factual metadata, and at least one `sources` URL.
+Project stories live in `src/content/projects/`. Their schema is defined in `src/content.config.ts`. A project requires explicit taxonomy flags, a stable `slug`, display order, factual metadata, and at least one `sources` URL.
 
-`sources` are build-time evidence for future review; project pages never display them. Keep repository facts static and deterministic. Do not add runtime GitHub requests, counters, badges, or inferred activity. `status: archived` must only be used when GitHub marks the repository archived.
+`sources` are build-time evidence for future review; project pages never display them. Keep repository facts static and deterministic. Do not add runtime GitHub requests, counters, badges, or inferred activity. `status` describes the reviewed lifecycle of the project or body of work; it does not have to mirror GitHub’s repository-level archive switch.
 
-`homepage` controls homepage inclusion. `featured` controls the selected-project index. `order` controls editorial order. The build rejects duplicate project slugs.
+`homepage` controls the primary current-project area on the homepage. `featured` controls current inclusion on the selected-project index. Archived projects cannot be `homepage` or `featured`; they belong in the archive. `order` controls editorial order. The build rejects duplicate project slugs.
 
 ### Writing
 

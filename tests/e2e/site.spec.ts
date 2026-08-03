@@ -87,6 +87,93 @@ test.describe('navigation and resilient layouts', () => {
   });
 });
 
+test.describe('project taxonomy', () => {
+  test('homepage only presents current projects', async ({ page }) => {
+    await page.goto('/');
+
+    const current = page.locator('section[aria-labelledby="featured-heading"]');
+    await expect(current.locator('.project-preview h3 a')).toHaveText([
+      'Ferret',
+      'lecho',
+      'waitfor',
+      'dbx',
+    ]);
+    await expect(current.getByRole('link', { name: 'Node-RED Tools' })).toHaveCount(0);
+    await expect(page.getByRole('heading', { name: 'Selected Past Work' })).toHaveCount(0);
+  });
+
+  test('project index only presents current selected projects', async ({ page }) => {
+    await page.goto('/projects/');
+
+    const language = page.locator('section[aria-labelledby="group-language-and-runtime"]');
+    const go = page.locator('section[aria-labelledby="group-go-infrastructure"]');
+
+    await expect(language.locator('.project-preview h3 a')).toHaveText(['Ferret']);
+    await expect(go.locator('.project-preview h3 a')).toHaveText([
+      'lecho',
+      'waitfor',
+      'dbx',
+      'throttle',
+    ]);
+    await expect(language.getByRole('link', { name: 'Node-RED Tools' })).toHaveCount(0);
+    await expect(go.getByRole('link', { name: 'Node-RED Tools' })).toHaveCount(0);
+    await expect(page.getByRole('heading', { name: 'Selected Past Work' })).toHaveCount(0);
+  });
+
+  test('archive lists Node-RED Tools as an ordinary archived project', async ({ page }) => {
+    await page.goto('/archive/');
+
+    const connectedSystems = page.locator('section[aria-labelledby="connected-systems"]');
+    await expect(
+      connectedSystems.getByRole('heading', { name: 'Connected Systems', exact: true }),
+    ).toBeVisible();
+    const nodeRedTools = connectedSystems
+      .locator('.archive-entry')
+      .filter({ hasText: 'Node-RED Tools' });
+    await expect(connectedSystems.getByRole('link', { name: 'Node-RED Tools' })).toHaveAttribute(
+      'href',
+      'https://github.com/node-red-tools',
+    );
+    await expect(nodeRedTools.getByText('2020–2022', { exact: true })).toBeVisible();
+    await expect(nodeRedTools.getByText('archived', { exact: true })).toBeVisible();
+    await expect(connectedSystems.getByRole('link', { name: 'project story' })).toHaveAttribute(
+      'href',
+      '/projects/node-red-tools/',
+    );
+
+    const beagle = connectedSystems.locator('.archive-entry').filter({ hasText: 'Beagle' });
+    await expect(beagle.getByText('Since 2017', { exact: true })).toBeVisible();
+    await expect(beagle.getByText('archived', { exact: true })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Selected Past Work' })).toHaveCount(0);
+  });
+
+  test('Node-RED Tools story states its historical lifecycle and authorship', async ({ page }) => {
+    await page.goto('/projects/node-red-tools/');
+
+    const facts = page.locator('.project-facts');
+    await expect(facts).toContainText('2020–2022');
+    await expect(facts).toContainText('archived');
+    await expect(facts).toContainText('Created and maintained by Timofei Voronov');
+    await expect(page.getByRole('heading', { name: 'What it was' })).toBeVisible();
+    await expect(
+      page.getByText('It was active from 2020 to 2022 and is now archived.'),
+    ).toBeVisible();
+
+    const schema = JSON.parse(
+      (await page.locator('script[type="application/ld+json"]').textContent()) ?? '{}',
+    );
+    expect(schema).toMatchObject({
+      '@type': 'SoftwareSourceCode',
+      name: 'Node-RED Tools',
+      creativeWorkStatus: 'archived',
+      temporalCoverage: '2020/2022',
+      sameAs: 'https://github.com/node-red-tools',
+      author: { name: 'Timofei Voronov' },
+    });
+    expect(schema).not.toHaveProperty('codeRepository');
+  });
+});
+
 test.describe('system preferences', () => {
   test('light and dark themes expose distinct high-contrast surfaces', async ({ page }) => {
     await page.emulateMedia({ colorScheme: 'light' });
@@ -180,11 +267,14 @@ test.describe('publication and metadata contracts', () => {
     });
   });
 
-  test('analytics and contact links are absent without public environment variables', async ({
+  test('analytics is absent without configuration and public contact links are emitted', async ({
     page,
   }) => {
     await page.goto('/');
     await expect(page.locator('script[src*="googletagmanager"]')).toHaveCount(0);
-    await expect(page.locator('a[href^="mailto:"]')).toHaveCount(0);
+    await expect(page.getByRole('link', { name: 'Email' })).toHaveAttribute(
+      'href',
+      'mailto:tim@tvoronov.dev',
+    );
   });
 });

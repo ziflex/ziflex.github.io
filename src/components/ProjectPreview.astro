@@ -25,6 +25,10 @@ const { project, size = 'standard', showCategory = false } = Astro.props;
   <div class="project-preview__links">
     <a class="text-link" href={projectRoute(project)}>Read the project story</a>
     {project.data.repository && <a href={project.data.repository}>Repository</a>}
-    {project.data.website && <a href={project.data.website}>Website</a>}
+    {
+      project.data.website && (
+        <a href={project.data.website}>{project.data.websiteLabel ?? 'Website'}</a>
+      )
+    }
   </div>
 </article>
