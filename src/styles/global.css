@@ -1,13 +1,13 @@
 :root {
-  color-scheme: light dark;
-  --paper: #f3efe7;
-  --paper-raised: #e9e2d7;
-  --ink: #24221e;
-  --ink-muted: #675f55;
-  --oxide: #963f2a;
-  --oxide-strong: #7f301f;
-  --rule: #c8bdae;
-  --code: #e5ddd1;
+  color-scheme: dark;
+  --paper: #191815;
+  --paper-raised: #24211d;
+  --ink: #eee7dc;
+  --ink-muted: #b8aea0;
+  --oxide: #df8261;
+  --oxide-strong: #f09a78;
+  --rule: #48423a;
+  --code: #2b2823;
   --measure: 69rem;
   --reading: 44rem;
   font-family:
@@ -19,19 +19,6 @@
     sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper: #191815;
-    --paper-raised: #24211d;
-    --ink: #eee7dc;
-    --ink-muted: #b8aea0;
-    --oxide: #df8261;
-    --oxide-strong: #f09a78;
-    --rule: #48423a;
-    --code: #2b2823;
-  }
 }
 
 *,

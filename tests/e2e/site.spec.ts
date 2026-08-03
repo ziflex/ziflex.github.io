@@ -178,12 +178,19 @@ test.describe('project taxonomy', () => {
 });
 
 test.describe('system preferences', () => {
-  test('light and dark themes expose distinct high-contrast surfaces', async ({ page }) => {
+  test('dark theme remains consistent across system preferences', async ({ page }) => {
     await page.emulateMedia({ colorScheme: 'light' });
     await page.goto('/');
-    const light = await page.locator('body').evaluate((element) => ({
-      background: getComputedStyle(element).backgroundColor,
-      color: getComputedStyle(element).color,
+    const light = await page.evaluate(() => ({
+      background: getComputedStyle(document.body).backgroundColor,
+      color: getComputedStyle(document.body).color,
+      colorScheme: getComputedStyle(document.documentElement).colorScheme,
+      themeColors: Array.from(document.querySelectorAll('meta[name="theme-color"]')).map(
+        (element) => ({
+          content: element.getAttribute('content'),
+          media: element.getAttribute('media'),
+        }),
+      ),
     }));
 
     await page.emulateMedia({ colorScheme: 'dark' });
@@ -192,9 +199,16 @@ test.describe('system preferences', () => {
       color: getComputedStyle(element).color,
     }));
 
-    expect(light).not.toEqual(dark);
-    expect(light.background).toBe('rgb(243, 239, 231)');
-    expect(dark.background).toBe('rgb(25, 24, 21)');
+    expect(light).toEqual({
+      background: 'rgb(25, 24, 21)',
+      color: 'rgb(238, 231, 220)',
+      colorScheme: 'dark',
+      themeColors: [{ content: '#191815', media: null }],
+    });
+    expect(dark).toEqual({
+      background: light.background,
+      color: light.color,
+    });
 
     const results = await new AxeBuilder({ page }).withTags(['wcag2aa']).analyze();
     expect(results.violations).toEqual([]);
