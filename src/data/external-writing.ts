@@ -8,6 +8,13 @@ export type ExternalArticle = {
 
 export const externalWriting: ExternalArticle[] = [
   {
+    title: 'Why Ferret Was Built as a Library First',
+    description: 'Build the library first. Everything else follows.',
+    url: 'https://ferretlang.org/blog/ferret-v2-lib-first/',
+    publishedAt: '2026-08-05',
+    publication: 'Ferret',
+  },
+  {
     title: 'New Website, New Docs, and the Road to Ferret v2',
     description: 'A project update on Ferret’s new home, documentation, and direction toward v2.',
     url: 'https://ferretlang.org/blog/new-website/',
