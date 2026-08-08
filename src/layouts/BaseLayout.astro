@@ -24,7 +24,7 @@ const {
 const pageTitle = title ? `${title} — ${SITE.name}` : SITE.title;
 const canonical = canonicalUrl ? new URL(canonicalUrl) : new URL(Astro.url.pathname, SITE.url);
 const socialImage = new URL(image, SITE.url);
-const analyticsId = import.meta.env.PUBLIC_GOOGLE_ANALYTICS_ID;
+const analyticsId = SITE.analyticsId;
 const analyticsScript = analyticsId
   ? `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config',${JSON.stringify(analyticsId)});`
   : '';

@@ -14,6 +14,7 @@ export const SITE = {
   rss: '/rss.xml',
   socialImage: '/og.png',
   resumeUrl: resume,
+  analyticsId: 'G-WH4DLC5TDQ',
 } as const;
 
 export const navigation = [
