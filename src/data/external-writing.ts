@@ -8,6 +8,13 @@ export type ExternalArticle = {
 
 export const externalWriting: ExternalArticle[] = [
   {
+    title: 'Introducing the Ferret Module Registry',
+    description: 'Discover, install, and publish Ferret modules.',
+    url: 'https://ferretlang.org/blog/ferret-module-registry/',
+    publishedAt: '2026-08-10',
+    publication: 'Ferret',
+  },
+  {
     title: 'Why Ferret Was Built as a Library First',
     description: 'Build the library first. Everything else follows.',
     url: 'https://ferretlang.org/blog/ferret-v2-lib-first/',
